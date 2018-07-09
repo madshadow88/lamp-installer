@@ -1,0 +1,130 @@
+#!/bin/bash
+<<property
+Autor:stephen dove
+Compania:Afore XXI
+Contact:tecmoi.sdove@xxi-banorte
+App:LAMP Installer
+Version:1.0
+Revision:23032018
+property
+##vars
+instmen=""
+distro=""
+su="sudo"
+uic="apt-get install"
+cic="yum install"
+ser="service"
+str="start"
+stp="stop"
+rst="restart"
+pkg=" "
+pkgi=" "
+pkga=""
+srv="-server"
+##vars
+##functions
+
+function installub {
+if [ $pkg = "mysql" ]
+then
+pkgi="mysql-server"
+else
+pkgi="$pkg"
+echo -e "\t Instalacion de $pkg para Ubuntu\n\n"
+echo -e "$su $uic $pkgi $pkga -y"
+echo -e "\n  $pkg Instalado \n"
+echo -e "\n Iniciando $pkg \n"
+echo -e "$su $ser $pkgi"
+echo -e "\n  $pkg Iniciado \n"
+fi
+}
+
+function installce {
+if [ $pkg = "mariadb" ]
+then
+pkgi="mariadb-server"
+pkga="$pkg"
+else
+pkgi="$pkg"
+echo -e "\t Instalacion de $pkg para Centos\n\n"
+echo -e "$su $cic $pkgi $pkga -y"
+echo -e "\n  $pkg Instalado \n"
+echo -e "\n Iniciando  $pkg \n"
+#sudo systemctl start httpd.service
+echo -e "$su $ser $pkgi"
+echo -e "\n  $pkg Iniciado \n"
+fi
+}
+##functions
+
+while [ "$instmen" != Q ]
+do
+echo -e " \t \t \n LAMP Installer (Linux, Apache, MySQL, PHP, PHPMyAdmin) \n \n"
+echo -e "\t Instalacion de:\n Apache2 \t A \n MySQL \t \t M \n PHP \t \t P \n PHPMyAdmin \t PA \n Todo \t \t T \n \n"
+echo -e "\n Salir Q "
+read -p "Que Instalar: " instmen
+##Instalacion por paquetes
+
+
+###APACHE
+if [ "$instmen" = A ]
+then
+echo -e "\n \t Instalacion Apache \n\n"
+echo -e "Ubuntu \t U \nCentos \t C \n(RedHat \t R) \n "
+read -p "Seleccionar Distribucion: " distro
+
+if [ "$distro" = U ]
+then
+pkg="apache2"
+installub
+/bin/sleep 5
+fi
+
+if [ "$distro" = C ]
+then
+pkg="httpd"
+installce
+/bin/sleep 5
+fi
+fi
+
+###MYSQL
+if [ "$instmen" = M ]
+then
+echo -e "\n \t Instalacion MySQL \n\n"
+echo -e "Ubuntu \t U \nCentos \t C \n(RedHat \t R) \n "
+read -p "Seleccionar Distribucion: " distro
+
+if [ "$distro" = U ]
+then
+pkg="mysql"
+#apt-get install libmysqlclient-dev
+installub
+/bin/sleep 5
+fi
+
+if [ "$distro" = C ]
+then
+pkg="mariadb"
+installce
+/bin/sleep 5
+fi
+fi
+
+
+###PHP
+if [ "$instmen" = P ]
+then
+echo -e "Instalacion PHP"
+fi
+
+###PHPMYADMIN
+if [ "$instmen" = PA ]
+then
+echo -e "Instalacion PHPMyAdmin"
+fi
+#echo -e "\tInstall Apache and Allow in Firewall\n"
+
+##Instalacion Completa
+
+done
